@@ -61,4 +61,76 @@ public class ReglaManoTest {
     void reglaFull() {
         assertEquals(List.of(13, 4), new ReglaFull().verificar(cartas("KC KD KT 4P 4C")).get().desempate());
     }
+
+    // Color
+    @Test
+    void reglaColor() {
+        assertEquals(CategoriaMano.COLOR, new ReglaColor().verificar(cartas("AC 9C 7C 4C 2C")).get().categoria());
+    }
+
+    // Escalera, incluida la del As bajo A-2-3-4-5
+    @Test
+    void reglaEscalera() {
+        assertEquals(List.of(9), new ReglaEscalera().verificar(cartas("9C 8D 7T 6P 5C")).get().desempate());
+        assertEquals(List.of(5), new ReglaEscalera().verificar(cartas("AC 2D 3T 4P 5C")).get().desempate());
+    }
+
+    // Trío
+    @Test
+    void reglaTrio() {
+        assertEquals(CategoriaMano.TRIO, new ReglaTrio().verificar(cartas("7C 7D 7T KP 2C")).get().categoria());
+    }
+
+    // Doble par
+    @Test
+    void reglaDoblePar() {
+        assertEquals(CategoriaMano.DOBLE_PAR, new ReglaDoblePar().verificar(cartas("7C 7D KT KP 2C")).get().categoria());
+    }
+
+    // Par, que no reconoce un full
+    @Test
+    void reglaPar() {
+        assertEquals(CategoriaMano.PAR, new ReglaPar().verificar(cartas("7C 7D KT QP 2C")).get().categoria());
+        assertTrue(new ReglaPar().verificar(cartas("KC KD KT 4P 4C")).isEmpty(), "Un full no es un par");
+    }
+
+    // Carta alta
+    @Test
+    void reglaCartaAlta() {
+        assertEquals(CategoriaMano.CARTA_ALTA, new ReglaCartaAlta().verificar(cartas("AC 7D KT QP 2C")).get().categoria());
+    }
+
+    // Solo se aceptan 5 cartas
+    @Test
+    void sonCincoCartas() {
+        assertTrue(ReglaMano.sonCincoCartas(cartas("AC 7D KT QP 2C")));
+        assertFalse(ReglaMano.sonCincoCartas(cartas("AC 7D KT QP")));
+        assertFalse(ReglaMano.sonCincoCartas(null));
+    }
+
+    // Cantidades de cada valor, de mayor a menor
+    @Test
+    void cantidades() {
+        assertEquals(List.of(3, 2), ReglaMano.cantidades(cartas("KC KD KT 4P 4C")));
+    }
+
+    // Desempate: primero los grupos más grandes
+    @Test
+    void desempatePorGrupos() {
+        assertEquals(List.of(13, 5, 9), ReglaMano.desempatePorGrupos(cartas("KC 5D KT 9P 5C")));
+    }
+
+    // Color cuando todas son del mismo palo
+    @Test
+    void esColor() {
+        assertTrue(ReglaMano.esColor(cartas("AC 9C 7C 4C 2C")));
+        assertFalse(ReglaMano.esColor(cartas("AC 9C 7C 4C 2D")));
+    }
+
+    // Carta alta de la escalera, o 0 si no es escalera
+    @Test
+    void cartaAltaEscalera() {
+        assertEquals(9, ReglaMano.cartaAltaEscalera(cartas("9C 8D 7T 6P 5C")));
+        assertEquals(0, ReglaMano.cartaAltaEscalera(cartas("9C 8D 7T 6P 4C")));
+    }
 }
