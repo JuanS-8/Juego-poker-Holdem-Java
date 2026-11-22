@@ -9,7 +9,8 @@ import com.poker.modelo.BarajadorAleatorio;
 import com.poker.modelo.Crupier;
 import com.poker.modelo.Mesa;
 import com.poker.servicio.*;
-import com.poker.vista.VistaConsola;
+import com.poker.vista.SonidoSintetizado;
+import com.poker.vista.VentanaPoker;
 
 public class ConfiguracionApp {
 
@@ -23,7 +24,7 @@ public class ConfiguracionApp {
         }
 
         // Vista, mesa y servicios
-        VistaConsola vista = new VistaConsola();
+        VentanaPoker vista = new VentanaPoker(new SonidoSintetizado());
         Mesa mesa = new Mesa(new Crupier("Crupier", new Baraja(new BarajadorAleatorio())));
         ServicioApuestas servicioApuestas = new ServicioApuestas(new ValidadorAccion(), vista);
         ServicioShowdown servicioShowdown = new ServicioShowdown(new EvaluadorManoEstandar());

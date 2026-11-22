@@ -162,7 +162,7 @@ public class PanelMesa extends JPanel {
         g.setFont(new Font("SansSerif", Font.PLAIN, 12));
         g.drawString("Fichas: " + asiento.fichas(), x + 10, y + 35);
         g.drawString(asiento.estado(), x + 10, y + 51);
-        if (asiento.apuestaActual() > 0) {
+        if (asiento.apuestaActual() > 0 && mesa.bote() > 0) {
             g.setColor(new Color(240, 210, 122));
             g.drawString("Apuesta: " + asiento.apuestaActual(), x + 95, y + 35);
         }
